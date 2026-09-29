@@ -280,7 +280,7 @@ class DashboardView extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Container(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.all(12), // Slightly reduced padding to give more room
           decoration: BoxDecoration(
             color: theme.cardColor,
             borderRadius: BorderRadius.circular(12),
@@ -292,10 +292,15 @@ class DashboardView extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(icon, color: color, size: 20),
-                  Text(
-                    count,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: color),
+                  Icon(icon, color: color, size: 18),
+                  const SizedBox(width: 4),
+                  Flexible(
+                    child: Text(
+                      count,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: color),
+                    ),
                   ),
                 ],
               ),
@@ -304,7 +309,7 @@ class DashboardView extends StatelessWidget {
                 title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 11, color: Colors.grey, fontWeight: FontWeight.w600),
+                style: const TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.w600),
               ),
             ],
           ),

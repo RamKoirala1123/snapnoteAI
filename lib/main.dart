@@ -4,6 +4,9 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:uuid/uuid.dart';
 import 'package:window_manager/window_manager.dart';
 
+import 'package:launch_at_startup/launch_at_startup.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+
 import 'core/app_theme.dart';
 import 'core/database/database_helper.dart';
 import 'core/models/app_settings.dart';
@@ -37,14 +40,25 @@ import 'ui/views/tags_view.dart';
 import 'ui/views/tasks_view.dart';
 import 'ui/views/timeline_view.dart';
 
-void main() async {
+void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  bool isHidden = args.contains('--hidden');
 
   // Initialize SQLite FFI on Windows
   if (Platform.isWindows || Platform.isLinux) {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
   }
+  
+  // Package Info
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+  launchAtStartup.setup(
+    appName: packageInfo.appName.isNotEmpty ? packageInfo.appName : 'SnapNote AI',
+    appPath: Platform.resolvedExecutable,
+    args: ['--hidden'],
+  );
 
   // Initialize Desktop Window Manager
   await windowManager.ensureInitialized();
@@ -60,8 +74,10 @@ void main() async {
   );
 
   windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
+    if (!isHidden) {
+      await windowManager.show();
+      await windowManager.focus();
+    }
   });
 
   // Initialize Local Notifications
@@ -77,7 +93,7 @@ class SnapNoteApp extends StatefulWidget {
   State<SnapNoteApp> createState() => _SnapNoteAppState();
 }
 
-class _SnapNoteAppState extends State<SnapNoteApp> {
+class _SnapNoteAppState extends State<SnapNoteApp> with WindowListener {
   AppSettings _settings = AppSettings();
   List<CaptureItem> _captures = [];
   bool _isLoading = true;
@@ -89,11 +105,29 @@ class _SnapNoteAppState extends State<SnapNoteApp> {
   @override
   void initState() {
     super.initState();
+    windowManager.addListener(this);
     _initializeApp();
+  }
+
+  @override
+  void dispose() {
+    windowManager.removeListener(this);
+    super.dispose();
+  }
+
+  @override
+  void onWindowClose() async {
+    if (_settings.minimizeToTray) {
+      await windowManager.hide();
+    } else {
+      await windowManager.destroy();
+    }
   }
 
   Future<void> _initializeApp() async {
     try {
+      await windowManager.setPreventClose(true);
+      
       final settings = await DatabaseHelper.instance.getSettings();
       final captures = await DatabaseHelper.instance.getAllCaptures();
 
@@ -106,9 +140,21 @@ class _SnapNoteAppState extends State<SnapNoteApp> {
       // Initialize System Tray
       await TrayService.instance.init(
         onCapture: _startCaptureOverlay,
-        onOpenApp: () => setState(() => _activeView = 'dashboard'),
-        onOpenSearch: () => setState(() => _activeView = 'search'),
-        onOpenSettings: () => setState(() => _activeView = 'settings'),
+        onOpenApp: () async {
+          await windowManager.show();
+          await windowManager.focus();
+          setState(() => _activeView = 'dashboard');
+        },
+        onOpenSearch: () async {
+          await windowManager.show();
+          await windowManager.focus();
+          setState(() => _activeView = 'search');
+        },
+        onOpenSettings: () async {
+          await windowManager.show();
+          await windowManager.focus();
+          setState(() => _activeView = 'settings');
+        },
         onTogglePauseAI: (paused) {},
       );
 
@@ -119,6 +165,12 @@ class _SnapNoteAppState extends State<SnapNoteApp> {
         regionShortcut: _settings.globalShortcut, // Ctrl + Shift + Space
         menuShortcut: 'Ctrl + Alt + Space',
       );
+      
+      if (_settings.startWithWindows) {
+        await launchAtStartup.enable();
+      } else {
+        await launchAtStartup.disable();
+      }
     } catch (e) {
       setState(() => _isLoading = false);
     }
@@ -135,6 +187,12 @@ class _SnapNoteAppState extends State<SnapNoteApp> {
       regionShortcut: newSettings.globalShortcut,
       menuShortcut: 'Ctrl + Alt + Space',
     );
+    
+    if (newSettings.startWithWindows) {
+      await launchAtStartup.enable();
+    } else {
+      await launchAtStartup.disable();
+    }
   }
   
   Future<void> _startRegionCaptureDirectly() async {

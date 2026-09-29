@@ -61,6 +61,8 @@ dependencies:
   flutter_local_notifications: 18.0.1
   archive: ^3.6.1
   flutter_highlighter: ^0.1.1
+  launch_at_startup: ^0.5.1
+  package_info_plus: ^9.0.1
 
 dev_dependencies:
   flutter_test:
