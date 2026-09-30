@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/models/capture_item.dart';
 import '../../core/utils/constants.dart';
+import '../widgets/k_components.dart';
 
 class TasksView extends StatelessWidget {
   final List<CaptureItem> captures;
@@ -27,7 +28,7 @@ class TasksView extends StatelessWidget {
     final openTasks = tasks.where((e) => !e.isCompleted).toList();
     final completedTasks = tasks.where((e) => e.isCompleted).toList();
 
-    return Scaffold(
+    return KScaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -80,7 +81,7 @@ class TasksView extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: theme.dividerColor.withOpacity(0.5)),
+        side: BorderSide(color: theme.dividerColor.withValues(alpha: 0.5)),
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -124,7 +125,7 @@ class TasksView extends StatelessWidget {
               Text(item.dueDate!, style: const TextStyle(fontSize: 12, color: Colors.grey)),
               const SizedBox(width: 16),
             ],
-            IconButton(
+            KButton.icon(
               icon: const Icon(Icons.delete_outline, color: Colors.grey),
               onPressed: () => onItemDelete(item.id),
               tooltip: 'Delete Task',

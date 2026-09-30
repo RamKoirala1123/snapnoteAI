@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import '../widgets/k_components.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/models/capture_item.dart';
@@ -166,13 +167,13 @@ class _CaptureDetailDialogState extends State<CaptureDetailDialog> with SingleTi
                   ),
                 const Spacer(),
                 if (widget.onRetryAI != null)
-                  OutlinedButton.icon(
+                  KButton.outlinedIcon(
                     onPressed: widget.onRetryAI,
                     icon: const Icon(Icons.refresh_rounded, size: 14),
                     label: const Text('Retry AI', style: TextStyle(fontSize: 12)),
                   ),
                 const SizedBox(width: 8),
-                IconButton(
+                KButton.icon(
                   icon: const Icon(Icons.close_rounded),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
@@ -219,7 +220,7 @@ class _CaptureDetailDialogState extends State<CaptureDetailDialog> with SingleTi
             // Footer Actions
             Row(
               children: [
-                TextButton.icon(
+                KButton.textIcon(
                   onPressed: () {
                     widget.onDelete();
                     Navigator.of(context).pop();
@@ -228,20 +229,16 @@ class _CaptureDetailDialogState extends State<CaptureDetailDialog> with SingleTi
                   label: const Text('Delete', style: TextStyle(color: Colors.redAccent)),
                 ),
                 const Spacer(),
-                OutlinedButton(
+                KButton.outlined(
                   onPressed: () => Navigator.of(context).pop(),
                   child: const Text('Cancel'),
                 ),
                 const SizedBox(width: 12),
-                ElevatedButton.icon(
+                KButton.primaryIcon(
                   onPressed: _handleSave,
                   icon: const Icon(Icons.check_rounded, size: 18),
                   label: const Text('Save Changes'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colorScheme.primary,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                   ),
-                ),
               ],
             ),
           ],

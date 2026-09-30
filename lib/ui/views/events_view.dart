@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../core/models/capture_item.dart';
 import '../../core/utils/constants.dart';
+import '../../core/app_typography.dart';
+import '../widgets/k_components.dart';
 
 class EventsView extends StatelessWidget {
   final List<CaptureItem> captures;
@@ -29,41 +31,22 @@ class EventsView extends StatelessWidget {
       return b.createdAt.compareTo(a.createdAt);
     });
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.calendar_today_rounded, color: AppConstants.getCategoryColor(AppConstants.catEvent), size: 28),
-                const SizedBox(width: 10),
-                Text('Events & Schedule', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-                const Spacer(),
-                Text('${events.length} Events', style: const TextStyle(color: Colors.grey)),
-              ],
+    return KScaffold(
+      title: 'Events & Schedule',
+      subtitle: '${events.length} Events',
+      body: events.isEmpty
+          ? Center(child: Text('No events detected in screenshots.', style: context.bodyMedium.muted(context)))
+          : ListView.builder(
+              itemCount: events.length,
+              itemBuilder: (context, index) {
+                final item = events[index];
+                return _buildEventCard(context, item, theme);
+              },
             ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: events.isEmpty
-                  ? const Center(child: Text('No events detected in screenshots.', style: TextStyle(color: Colors.grey)))
-                  : ListView.builder(
-                      itemCount: events.length,
-                      itemBuilder: (context, index) {
-                        final item = events[index];
-                        return _buildEventCard(item, theme);
-                      },
-                    ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
-  Widget _buildEventCard(CaptureItem item, ThemeData theme) {
+  Widget _buildEventCard(BuildContext context, CaptureItem item, ThemeData theme) {
     final dateStr = item.date ?? 'No Date';
     final timeStr = item.time ?? 'All Day';
     final locationStr = item.location ?? item.address ?? item.city ?? '';
@@ -85,111 +68,101 @@ class EventsView extends StatelessWidget {
       }
     } catch (_) {}
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: theme.dividerColor),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: KContainer(
+        padding: EdgeInsets.zero,
         onTap: () => onItemTap(item),
-        child: Row(
-          children: [
-            // Left Calendar Block
-            Container(
-              width: 80,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withOpacity(0.1),
-                borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), bottomLeft: Radius.circular(16)),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    month,
-                    style: TextStyle(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    day,
-                    style: TextStyle(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            
-            // Middle Details
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Left Calendar Block
+              Container(
+                width: 70,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), bottomLeft: Radius.circular(12)),
+                ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            item.title,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete_outline, color: Colors.grey, size: 20),
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                          onPressed: () => onItemDelete(item.id),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        const Icon(Icons.access_time, size: 14, color: Colors.grey),
-                        const SizedBox(width: 4),
-                        Text(timeStr, style: const TextStyle(fontSize: 13, color: Colors.grey)),
-                        
-                        if (locationStr.isNotEmpty) ...[
-                          const SizedBox(width: 16),
-                          const Icon(Icons.location_on, size: 14, color: Colors.grey),
-                          const SizedBox(width: 4),
-                          Expanded(
-                            child: Text(
-                              locationStr,
-                              style: const TextStyle(fontSize: 13, color: Colors.grey),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                    const SizedBox(height: 8),
                     Text(
-                      item.summary.isNotEmpty ? item.summary : item.content,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 13, color: theme.textTheme.bodyMedium?.color?.withOpacity(0.8)),
+                      month,
+                      style: context.labelMedium.primary(context).copyWith(letterSpacing: 1.2),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      day,
+                      style: context.headlineSmall.primary(context).copyWith(fontSize: 24),
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
+              
+              // Middle Details
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              item.title,
+                              style: context.titleSmall,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          KButton.icon(
+                            icon: Icon(Icons.delete_outline, color: theme.iconTheme.color?.withValues(alpha: 0.5), size: 18),
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            onPressed: () => onItemDelete(item.id),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Icon(Icons.access_time_rounded, size: 14, color: theme.colorScheme.primary),
+                          const SizedBox(width: 4),
+                          Text(timeStr, style: context.labelMedium),
+                          
+                          if (locationStr.isNotEmpty) ...[
+                            const SizedBox(width: 16),
+                            const Icon(Icons.location_on_rounded, size: 14, color: Colors.redAccent),
+                            const SizedBox(width: 4),
+                            Expanded(
+                              child: Text(
+                                locationStr,
+                                style: context.labelMedium,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        item.summary.isNotEmpty ? item.summary : item.content,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.labelSmall.muted(context),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

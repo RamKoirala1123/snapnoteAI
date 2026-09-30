@@ -7,6 +7,7 @@ import 'package:flutter_highlighter/themes/atom-one-dark.dart';
 import 'package:flutter_highlighter/themes/github.dart';
 import '../../core/models/capture_item.dart';
 import '../../core/utils/constants.dart';
+import '../widgets/k_components.dart';
 
 class CodeView extends StatelessWidget {
   final List<CaptureItem> captures;
@@ -27,7 +28,7 @@ class CodeView extends StatelessWidget {
     
     snippets.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
-    return Scaffold(
+    return KScaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -67,7 +68,7 @@ class CodeView extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                                 decoration: BoxDecoration(
-                                  color: theme.brightness == Brightness.dark ? Colors.white.withOpacity(0.05) : Colors.black.withOpacity(0.05),
+                                  color: theme.brightness == Brightness.dark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05),
                                   borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                                 ),
                                 child: Row(
@@ -81,7 +82,7 @@ class CodeView extends StatelessWidget {
                                       Container(
                                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                         decoration: BoxDecoration(
-                                          color: theme.colorScheme.primary.withOpacity(0.1),
+                                          color: theme.colorScheme.primary.withValues(alpha: 0.1),
                                           borderRadius: BorderRadius.circular(6),
                                         ),
                                         child: Text(
@@ -91,19 +92,19 @@ class CodeView extends StatelessWidget {
                                       ),
                                       const SizedBox(width: 12),
                                     ],
-                                    IconButton(
+                                    KButton.icon(
                                       icon: const Icon(Icons.copy_rounded, size: 18),
                                       tooltip: 'Copy Raw Content',
                                       onPressed: () {
                                         Clipboard.setData(ClipboardData(text: item.content));
                                       },
                                     ),
-                                    IconButton(
+                                    KButton.icon(
                                       icon: const Icon(Icons.open_in_full_rounded, size: 18),
                                       tooltip: 'View Details',
                                       onPressed: () => onItemTap(item),
                                     ),
-                                    IconButton(
+                                    KButton.icon(
                                       icon: const Icon(Icons.delete_outline, size: 18, color: Colors.grey),
                                       tooltip: 'Delete Snippet',
                                       onPressed: () => onItemDelete(item.id),

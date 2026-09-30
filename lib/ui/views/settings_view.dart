@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/models/app_settings.dart';
 import '../dialogs/export_dialog.dart';
+import '../widgets/k_components.dart';
 
 class SettingsView extends StatefulWidget {
   final AppSettings settings;
@@ -101,7 +102,7 @@ class _SettingsViewState extends State<SettingsView> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
+    return KScaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -116,16 +117,11 @@ class _SettingsViewState extends State<SettingsView> {
                   child: Text('Application Settings', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
                 ),
                 const SizedBox(width: 10),
-                ElevatedButton.icon(
+                KButton.primaryIcon(
                   onPressed: _save,
                   icon: const Icon(Icons.save_rounded),
                   label: const Text('Save Settings'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colorScheme.primary,
-                    foregroundColor: theme.colorScheme.onPrimary,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                   ),
-                ),
               ],
             ),
 
@@ -147,7 +143,7 @@ class _SettingsViewState extends State<SettingsView> {
                           labelText: 'API Key (f1arl.com)',
                           hintText: 'Enter your API key...',
                           prefixIcon: const Icon(Icons.key_rounded),
-                          suffixIcon: IconButton(
+                          suffixIcon: KButton.icon(
                             icon: Icon(_obscureApiKey ? Icons.visibility_off : Icons.visibility),
                             onPressed: () => setState(() => _obscureApiKey = !_obscureApiKey),
                           ),
@@ -287,7 +283,7 @@ class _SettingsViewState extends State<SettingsView> {
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 const SizedBox(height: 12),
-                ElevatedButton.icon(
+                KButton.primaryIcon(
                   onPressed: () => ExportDialog.show(context),
                   icon: const Icon(Icons.import_export_rounded),
                   label: const Text('Export Data / Create Backup'),

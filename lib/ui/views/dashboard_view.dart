@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../core/models/capture_item.dart';
+import '../../core/app_typography.dart';
 import '../../core/utils/constants.dart';
 import '../widgets/capture_card.dart';
+import '../widgets/k_components.dart';
 
 class DashboardView extends StatelessWidget {
   final List<CaptureItem> captures;
@@ -33,74 +35,23 @@ class DashboardView extends StatelessWidget {
     final recentCaptures = captures.take(6).toList();
     final upcomingEvents = captures.where((e) => e.category == AppConstants.catEvent || e.category == AppConstants.catReminder).take(4).toList();
 
-    return Scaffold(
+    return KScaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Welcome Header & Quick Capture Hero Banner
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF6366F1), Color(0xFF7C3AED)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+            // Welcome Header
+            Row(
+              children: [
+                Icon(Icons.auto_awesome_rounded, color: theme.colorScheme.primary, size: 28),
+                const SizedBox(width: 12),
+                Text(
+                  'SnapNote AI',
+                  style: context.headlineMedium.copyWith(fontWeight: FontWeight.bold),
                 ),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF7C3AED).withOpacity(0.3),
-                    blurRadius: 16,
-                    offset: const Offset(0, 6),
-                  )
-                ],
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(Icons.auto_awesome_rounded, color: Colors.amber, size: 24),
-                            const SizedBox(width: 8),
-                            Text(
-                              'SnapNote AI',
-                              style: theme.textTheme.headlineMedium?.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 6),
-                        const Text(
-                          'Anything you see on screen becomes structured notes, events, reminders & tasks.',
-                          style: TextStyle(color: Colors.white70, fontSize: 13),
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton.icon(
-                          onPressed: onQuickCapture,
-                          icon: const Icon(Icons.crop_free_rounded, color: Colors.black),
-                          label: const Text(
-                            'Capture Screen (Ctrl + Shift + Space)',
-                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              ],
             ),
 
             const SizedBox(height: 24),
@@ -219,13 +170,8 @@ class DashboardView extends StatelessWidget {
                           separatorBuilder: (_, __) => const SizedBox(height: 10),
                           itemBuilder: (context, index) {
                             final item = upcomingEvents[index];
-                            return Container(
+                            return KContainer(
                               padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: theme.cardColor,
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: theme.dividerColor),
-                              ),
                               child: Row(
                                 children: [
                                   Icon(
@@ -246,7 +192,7 @@ class DashboardView extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  IconButton(
+                                  KButton.icon(
                                     icon: const Icon(Icons.chevron_right_rounded, size: 18),
                                     onPressed: () => onItemTap(item),
                                   ),
@@ -274,18 +220,12 @@ class DashboardView extends StatelessWidget {
     required Color color,
     required VoidCallback onTap,
   }) {
-    final theme = Theme.of(context);
     return Expanded(
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
-        child: Container(
+        child: KContainer(
           padding: const EdgeInsets.all(12), // Slightly reduced padding to give more room
-          decoration: BoxDecoration(
-            color: theme.cardColor,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: theme.dividerColor),
-          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -319,13 +259,9 @@ class DashboardView extends StatelessWidget {
   }
 
   Widget _emptyBox(String message) {
-    return Container(
-      width: double.infinity,
+    return KContainer(
       padding: const EdgeInsets.all(32),
-      decoration: BoxDecoration(
-        color: Colors.black12,
-        borderRadius: BorderRadius.circular(12),
-      ),
+      color: Colors.black12,
       child: Center(
         child: Text(
           message,

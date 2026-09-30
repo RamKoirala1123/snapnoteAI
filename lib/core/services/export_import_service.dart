@@ -4,7 +4,6 @@ import 'package:archive/archive_io.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart' as p;
 import '../database/database_helper.dart';
-import '../models/capture_item.dart';
 import 'storage_service.dart';
 
 class ExportImportService {

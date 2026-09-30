@@ -4,6 +4,7 @@ import '../../core/models/capture_item.dart';
 import '../../core/services/ai_service.dart';
 import '../../core/utils/constants.dart';
 import '../widgets/capture_card.dart';
+import '../widgets/k_components.dart';
 
 class SearchView extends StatefulWidget {
   final List<CaptureItem> captures;
@@ -87,7 +88,7 @@ class _SearchViewState extends State<SearchView> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
+    return KScaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -226,17 +227,13 @@ class _SearchViewState extends State<SearchView> with SingleTickerProviderStateM
               ),
             ),
             const SizedBox(width: 12),
-            ElevatedButton.icon(
+            KButton.primaryIcon(
               onPressed: _isNlSearching ? null : _performNlSearch,
               icon: _isNlSearching
                   ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
                   : const Icon(Icons.auto_awesome_rounded),
               label: const Text('Ask AI'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.primary,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               ),
-            ),
           ],
         ),
 
@@ -247,9 +244,9 @@ class _SearchViewState extends State<SearchView> with SingleTickerProviderStateM
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withOpacity(0.12),
+              color: theme.colorScheme.primary.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: theme.colorScheme.primary.withOpacity(0.3)),
+              border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.3)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/models/capture_item.dart';
 import '../../core/utils/constants.dart';
+import '../widgets/k_components.dart';
 
 class PlacesView extends StatelessWidget {
   final List<CaptureItem> captures;
@@ -21,7 +22,7 @@ class PlacesView extends StatelessWidget {
     
     places.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
-    return Scaffold(
+    return KScaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -76,7 +77,7 @@ class PlacesView extends StatelessWidget {
               width: 100,
               height: 120,
               decoration: BoxDecoration(
-                color: theme.colorScheme.secondary.withOpacity(0.1),
+                color: theme.colorScheme.secondary.withValues(alpha: 0.1),
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), bottomLeft: Radius.circular(16)),
               ),
               child: Center(
@@ -101,7 +102,7 @@ class PlacesView extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        IconButton(
+                        KButton.icon(
                           icon: const Icon(Icons.delete_outline, color: Colors.grey, size: 20),
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
@@ -131,7 +132,7 @@ class PlacesView extends StatelessWidget {
                       item.summary,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 13, color: theme.textTheme.bodyMedium?.color?.withOpacity(0.8)),
+                      style: TextStyle(fontSize: 13, color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.8)),
                     ),
                   ],
                 ),

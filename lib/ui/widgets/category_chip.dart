@@ -13,29 +13,29 @@ class CategoryChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = AppConstants.getCategoryColor(category);
+    final theme = Theme.of(context);
     final icon = AppConstants.getCategoryIcon(category);
     final label = AppConstants.getCategoryLabel(category);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.18),
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: color.withOpacity(0.4), width: 1),
+        color: theme.dividerColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: theme.dividerColor.withValues(alpha: 0.2), width: 1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 13, color: color),
+          Icon(icon, size: 12, color: theme.iconTheme.color?.withValues(alpha: 0.6)),
           if (showLabel) ...[
             const SizedBox(width: 4),
             Text(
               label,
               style: TextStyle(
-                color: color,
+                color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.8),
                 fontSize: 11,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],

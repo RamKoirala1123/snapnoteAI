@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/k_components.dart';
 import '../../core/models/capture_item.dart';
 
 enum DuplicateAction { openExisting, saveAnyway, deleteNew }
@@ -78,17 +79,16 @@ class DuplicateAlertDialog extends StatelessWidget {
         ],
       ),
       actions: [
-        TextButton(
+        KButton.text(
           onPressed: () => Navigator.of(context).pop(DuplicateAction.deleteNew),
           child: const Text('Delete New', style: TextStyle(color: Colors.redAccent)),
         ),
-        TextButton(
+        KButton.text(
           onPressed: () => Navigator.of(context).pop(DuplicateAction.openExisting),
           child: const Text('Open Existing'),
         ),
-        ElevatedButton(
+        KButton.primary(
           onPressed: () => Navigator.of(context).pop(DuplicateAction.saveAnyway),
-          style: ElevatedButton.styleFrom(backgroundColor: theme.colorScheme.primary),
           child: const Text('Save Anyway'),
         ),
       ],

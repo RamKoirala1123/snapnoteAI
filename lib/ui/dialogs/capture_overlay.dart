@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/k_components.dart';
 import '../../core/services/capture_service.dart';
 
 class CaptureOverlayDialog extends StatelessWidget {
@@ -31,7 +32,7 @@ class CaptureOverlayDialog extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primary.withOpacity(0.2),
+                    color: theme.colorScheme.primary.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Icon(Icons.crop_free_rounded, color: theme.colorScheme.primary),
@@ -51,7 +52,7 @@ class CaptureOverlayDialog extends StatelessWidget {
                   ],
                 ),
                 const Spacer(),
-                IconButton(
+                KButton.icon(
                   icon: const Icon(Icons.close_rounded),
                   onPressed: () => Navigator.of(context).pop(null),
                 ),
@@ -150,7 +151,7 @@ class CaptureOverlayDialog extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.15),
+                  color: color.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(icon, color: color, size: 20),

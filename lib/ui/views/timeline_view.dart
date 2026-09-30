@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../core/models/capture_item.dart';
 import '../widgets/capture_card.dart';
+import '../widgets/k_components.dart';
 
 class TimelineView extends StatelessWidget {
   final List<CaptureItem> captures;
@@ -26,7 +27,7 @@ class TimelineView extends StatelessWidget {
       grouped.putIfAbsent(dayKey, () => []).add(capture);
     }
 
-    return Scaffold(
+    return KScaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
         padding: const EdgeInsets.all(24),

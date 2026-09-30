@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/k_components.dart';
 import '../../core/utils/constants.dart';
 
 class Sidebar extends StatelessWidget {
@@ -6,6 +7,8 @@ class Sidebar extends StatelessWidget {
   final Function(String view) onSelectView;
   final VoidCallback onQuickCapture;
   final int inboxCount;
+  final String currentTheme;
+  final VoidCallback onToggleTheme;
 
   const Sidebar({
     super.key,
@@ -13,6 +16,8 @@ class Sidebar extends StatelessWidget {
     required this.onSelectView,
     required this.onQuickCapture,
     required this.inboxCount,
+    required this.currentTheme,
+    required this.onToggleTheme,
   });
 
   @override
@@ -35,7 +40,7 @@ class Sidebar extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primary.withOpacity(0.2),
+                    color: theme.colorScheme.primary.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(Icons.auto_awesome_rounded, color: theme.colorScheme.primary, size: 22),
@@ -65,16 +70,11 @@ class Sidebar extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
             child: SizedBox(
               width: double.infinity,
-              child: ElevatedButton.icon(
+              child: KButton.primaryIcon(
                 onPressed: onQuickCapture,
                 icon: const Icon(Icons.crop_free_rounded, size: 18),
                 label: const Text('Capture Screen', style: TextStyle(fontWeight: FontWeight.bold)),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: theme.colorScheme.primary,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 ),
-              ),
             ),
           ),
 
@@ -99,16 +99,70 @@ class Sidebar extends StatelessWidget {
                 _navItem(context, id: 'places', label: 'Places', icon: AppConstants.getCategoryIcon(AppConstants.catPlace)),
                 const Divider(height: 16),
                 _navItem(context, id: 'tags', label: 'Tags', icon: Icons.tag_rounded),
-                _navItem(context, id: 'search', label: 'Search & AI', icon: Icons.search_rounded),
+                _navItem(context, id: 'chat', label: 'AI Copilot', icon: Icons.chat_bubble_outline_rounded),
+                _navItem(context, id: 'search', label: 'Search', icon: Icons.search_rounded),
                 _navItem(context, id: 'timeline', label: 'Timeline', icon: Icons.timeline_rounded),
               ],
             ),
           ),
 
-          // Settings at bottom
+          // Settings and Theme Switcher
           Padding(
-            padding: const EdgeInsets.all(10),
-            child: _navItem(context, id: 'settings', label: 'Settings', icon: Icons.settings_rounded),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            child: Column(
+              children: [
+                _navItem(context, id: 'settings', label: 'Settings', icon: Icons.settings_rounded),
+                const SizedBox(height: 8),
+                // Theme Switcher
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 12),
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: theme.dividerColor.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: currentTheme == 'light' ? onToggleTheme : null,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 6),
+                            decoration: BoxDecoration(
+                              color: currentTheme == 'dark' ? theme.colorScheme.primary.withValues(alpha: 0.15) : Colors.transparent,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Icon(
+                              Icons.dark_mode_rounded,
+                              size: 16,
+                              color: currentTheme == 'dark' ? theme.colorScheme.primary : Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: currentTheme == 'dark' ? onToggleTheme : null,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 6),
+                            decoration: BoxDecoration(
+                              color: currentTheme == 'light' ? theme.colorScheme.primary.withValues(alpha: 0.15) : Colors.transparent,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Icon(
+                              Icons.light_mode_rounded,
+                              size: 16,
+                              color: currentTheme == 'light' ? theme.colorScheme.primary : Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
           ),
         ],
       ),
@@ -128,7 +182,7 @@ class Sidebar extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 2),
       child: Material(
-        color: isSelected ? theme.colorScheme.primary.withOpacity(0.15) : Colors.transparent,
+        color: isSelected ? theme.colorScheme.primary.withValues(alpha: 0.15) : Colors.transparent,
         borderRadius: BorderRadius.circular(8),
         child: InkWell(
           onTap: () => onSelectView(id),

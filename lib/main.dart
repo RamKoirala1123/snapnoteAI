@@ -24,12 +24,14 @@ import 'ui/dialogs/capture_overlay.dart';
 import 'ui/dialogs/duplicate_alert_dialog.dart';
 import 'ui/layout/sidebar.dart';
 
+import 'ui/views/chat_view.dart';
 import 'ui/views/code_view.dart';
 import 'ui/views/dashboard_view.dart';
 import 'ui/views/events_view.dart';
 import 'ui/views/ideas_view.dart';
 import 'ui/views/inbox_view.dart';
 import 'ui/views/notes_view.dart';
+import 'ui/views/note_reader_view.dart';
 import 'ui/views/places_view.dart';
 import 'ui/views/read_later_view.dart';
 import 'ui/views/reminders_view.dart';
@@ -39,6 +41,7 @@ import 'ui/views/shopping_view.dart';
 import 'ui/views/tags_view.dart';
 import 'ui/views/tasks_view.dart';
 import 'ui/views/timeline_view.dart';
+import 'ui/widgets/k_components.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -98,6 +101,8 @@ class _SnapNoteAppState extends State<SnapNoteApp> with WindowListener {
   List<CaptureItem> _captures = [];
   bool _isLoading = true;
   String _activeView = 'dashboard';
+  String _previousView = 'dashboard';
+  CaptureItem? _selectedNoteForReading;
   final CustomAIApiService _aiService = CustomAIApiService();
   final Uuid _uuid = const Uuid();
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
@@ -349,6 +354,15 @@ class _SnapNoteAppState extends State<SnapNoteApp> with WindowListener {
   }
 
   void _openCaptureDetail(CaptureItem item) {
+    if (item.category == AppConstants.catNote || item.category == AppConstants.catReadLater) {
+      setState(() {
+        _selectedNoteForReading = item;
+        _previousView = _activeView;
+        _activeView = 'note_reader';
+      });
+      return;
+    }
+    
     final ctx = _navigatorKey.currentContext;
     if (ctx == null) return;
     
@@ -374,7 +388,7 @@ class _SnapNoteAppState extends State<SnapNoteApp> with WindowListener {
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
       theme: theme,
-      home: Scaffold(
+      home: KScaffold(padding: EdgeInsets.zero,
         body: _isLoading
             ? const Center(child: CircularProgressIndicator())
             : Row(
@@ -385,6 +399,12 @@ class _SnapNoteAppState extends State<SnapNoteApp> with WindowListener {
                     onSelectView: (view) => setState(() => _activeView = view),
                     onQuickCapture: _startCaptureOverlay,
                     inboxCount: inboxCount,
+                    currentTheme: _settings.themeMode,
+                    onToggleTheme: () {
+                      final newTheme = _settings.themeMode == 'dark' ? 'light' : 'dark';
+                      final updated = _settings.copyWith(themeMode: newTheme);
+                      _saveSettings(updated);
+                    },
                   ),
 
                   // Main View Content Area
@@ -483,6 +503,12 @@ class _SnapNoteAppState extends State<SnapNoteApp> with WindowListener {
           onItemTap: _openCaptureDetail,
           onItemDelete: _deleteCapture,
         );
+      case 'chat':
+        return ChatView(
+          captures: _captures,
+          settings: _settings,
+          onItemTap: _openCaptureDetail,
+        );
       case 'timeline':
         return TimelineView(
           captures: _captures,
@@ -493,6 +519,41 @@ class _SnapNoteAppState extends State<SnapNoteApp> with WindowListener {
         return SettingsView(
           settings: _settings,
           onSaveSettings: _saveSettings,
+        );
+      case 'note_reader':
+        if (_selectedNoteForReading != null) {
+          return NoteReaderView(
+            note: _selectedNoteForReading!,
+            onBack: () => setState(() => _activeView = _previousView),
+            onEdit: () {
+              // Open the dialog to actually edit the item
+              final ctx = _navigatorKey.currentContext;
+              if (ctx == null) return;
+              CaptureDetailDialog.show(
+                ctx,
+                item: _selectedNoteForReading!,
+                onSave: (updatedItem) async {
+                  await _updateCaptureItem(updatedItem);
+                  setState(() {
+                    _selectedNoteForReading = updatedItem;
+                  });
+                },
+                onDelete: () async {
+                  await _deleteCapture(_selectedNoteForReading!.id);
+                  setState(() => _activeView = _previousView);
+                },
+                onRetryAI: () => _processNewScreenshot(_selectedNoteForReading!.imagePath),
+              );
+            },
+          );
+        }
+        // Fallback if null
+        return DashboardView(
+          captures: _captures,
+          onQuickCapture: _startCaptureOverlay,
+          onNavigateToView: (view) => setState(() => _activeView = view),
+          onItemTap: _openCaptureDetail,
+          onItemDelete: _deleteCapture,
         );
       default:
         return DashboardView(

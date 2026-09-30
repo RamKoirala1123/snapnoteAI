@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/models/capture_item.dart';
 import '../widgets/capture_card.dart';
+import '../widgets/k_components.dart';
 
 class InboxView extends StatefulWidget {
   final List<CaptureItem> captures;
@@ -41,7 +42,7 @@ class _InboxViewState extends State<InboxView> {
 
     final needsReviewCount = widget.captures.where((e) => e.isUncertain || e.status == 'needs_review').length;
 
-    return Scaffold(
+    return KScaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -79,7 +80,7 @@ class _InboxViewState extends State<InboxView> {
                     ChoiceChip(
                       label: Text('⚠️ Needs Review ($needsReviewCount)'),
                       selected: _filterNeedsReviewOnly,
-                      selectedColor: Colors.amber.withOpacity(0.3),
+                      selectedColor: Colors.amber.withValues(alpha: 0.3),
                       onSelected: (val) => setState(() => _filterNeedsReviewOnly = true),
                     ),
                   ],

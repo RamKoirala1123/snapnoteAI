@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/models/capture_item.dart';
 import '../../core/utils/constants.dart';
+import '../widgets/k_components.dart';
 
 class NotesView extends StatelessWidget {
   final List<CaptureItem> captures;
@@ -21,7 +22,7 @@ class NotesView extends StatelessWidget {
     
     notes.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
-    return Scaffold(
+    return KScaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -66,11 +67,11 @@ class NotesView extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: theme.dividerColor.withOpacity(0.5)),
+        side: BorderSide(color: theme.dividerColor.withValues(alpha: 0.5)),
       ),
       color: theme.brightness == Brightness.dark 
-          ? Colors.blue.withOpacity(0.05) 
-          : Colors.blue.withOpacity(0.05),
+          ? Colors.blue.withValues(alpha: 0.05) 
+          : Colors.blue.withValues(alpha: 0.05),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () => onItemTap(item),
@@ -90,7 +91,7 @@ class NotesView extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  IconButton(
+                  KButton.icon(
                     icon: const Icon(Icons.delete_outline, size: 18, color: Colors.grey),
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
@@ -102,7 +103,7 @@ class NotesView extends StatelessWidget {
               Expanded(
                 child: Text(
                   item.summary.isNotEmpty ? item.summary : item.content,
-                  style: TextStyle(fontSize: 13, color: theme.textTheme.bodyMedium?.color?.withOpacity(0.8)),
+                  style: TextStyle(fontSize: 13, color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.8)),
                   overflow: TextOverflow.fade,
                 ),
               ),

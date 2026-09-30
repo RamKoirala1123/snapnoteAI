@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/models/capture_item.dart';
 import '../../core/utils/constants.dart';
+import '../widgets/k_components.dart';
 
 class ReadLaterView extends StatelessWidget {
   final List<CaptureItem> captures;
@@ -26,7 +27,7 @@ class ReadLaterView extends StatelessWidget {
     final unread = items.where((e) => !e.isRead).toList();
     final read = items.where((e) => e.isRead).toList();
 
-    return Scaffold(
+    return KScaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -94,7 +95,7 @@ class ReadLaterView extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.tertiary.withOpacity(0.1),
+                  color: theme.colorScheme.tertiary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(isRead ? Icons.check_circle : Icons.article, color: theme.colorScheme.tertiary, size: 24),
@@ -121,7 +122,7 @@ class ReadLaterView extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        IconButton(
+                        KButton.icon(
                           icon: const Icon(Icons.delete_outline, color: Colors.grey, size: 20),
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
@@ -153,7 +154,7 @@ class ReadLaterView extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 13, 
-                        color: isRead ? Colors.grey : theme.textTheme.bodyMedium?.color?.withOpacity(0.8),
+                        color: isRead ? Colors.grey : theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.8),
                       ),
                     ),
                     const SizedBox(height: 12),

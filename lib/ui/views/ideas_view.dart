@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/models/capture_item.dart';
 import '../../core/utils/constants.dart';
+import '../widgets/k_components.dart';
 
 class IdeasView extends StatelessWidget {
   final List<CaptureItem> captures;
@@ -21,7 +22,7 @@ class IdeasView extends StatelessWidget {
     
     ideas.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
-    return Scaffold(
+    return KScaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -66,11 +67,11 @@ class IdeasView extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: Colors.amber.withOpacity(0.3)),
+        side: BorderSide(color: Colors.amber.withValues(alpha: 0.3)),
       ),
       color: theme.brightness == Brightness.dark 
-          ? Colors.amber.withOpacity(0.05) 
-          : Colors.amber.withOpacity(0.05),
+          ? Colors.amber.withValues(alpha: 0.05) 
+          : Colors.amber.withValues(alpha: 0.05),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () => onItemTap(item),
@@ -84,7 +85,7 @@ class IdeasView extends StatelessWidget {
                 children: [
                   Icon(Icons.lightbulb, size: 20, color: Colors.amber[600]),
                   const Spacer(),
-                  IconButton(
+                  KButton.icon(
                     icon: const Icon(Icons.delete_outline, size: 18, color: Colors.grey),
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
@@ -103,7 +104,7 @@ class IdeasView extends StatelessWidget {
               Expanded(
                 child: Text(
                   item.summary,
-                  style: TextStyle(fontSize: 13, color: theme.textTheme.bodyMedium?.color?.withOpacity(0.8)),
+                  style: TextStyle(fontSize: 13, color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.8)),
                   overflow: TextOverflow.fade,
                 ),
               ),
@@ -114,7 +115,7 @@ class IdeasView extends StatelessWidget {
                   children: item.tags.take(2).map((tag) => Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: Colors.amber.withOpacity(0.2),
+                      color: Colors.amber.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text('#$tag', style: TextStyle(fontSize: 10, color: Colors.amber[800])),

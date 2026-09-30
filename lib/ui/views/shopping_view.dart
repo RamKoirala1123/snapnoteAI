@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/models/capture_item.dart';
 import '../../core/utils/constants.dart';
+import '../widgets/k_components.dart';
 
 class ShoppingView extends StatelessWidget {
   final List<CaptureItem> captures;
@@ -26,7 +27,7 @@ class ShoppingView extends StatelessWidget {
     final wishlist = items.where((e) => !e.isPurchased).toList();
     final purchased = items.where((e) => e.isPurchased).toList();
 
-    return Scaffold(
+    return KScaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -82,7 +83,7 @@ class ShoppingView extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: theme.dividerColor.withOpacity(0.5)),
+        side: BorderSide(color: theme.dividerColor.withValues(alpha: 0.5)),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
@@ -96,9 +97,9 @@ class ShoppingView extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                 decoration: BoxDecoration(
-                  color: isBought ? Colors.grey.withOpacity(0.1) : Colors.green.withOpacity(0.1),
+                  color: isBought ? Colors.grey.withValues(alpha: 0.1) : Colors.green.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: isBought ? Colors.grey.withOpacity(0.3) : Colors.green.withOpacity(0.3)),
+                  border: Border.all(color: isBought ? Colors.grey.withValues(alpha: 0.3) : Colors.green.withValues(alpha: 0.3)),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -139,7 +140,7 @@ class ShoppingView extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        IconButton(
+                        KButton.icon(
                           icon: const Icon(Icons.delete_outline, color: Colors.grey, size: 20),
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
@@ -160,7 +161,7 @@ class ShoppingView extends StatelessWidget {
                       item.summary,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 13, color: theme.textTheme.bodyMedium?.color?.withOpacity(0.7)),
+                      style: TextStyle(fontSize: 13, color: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.7)),
                     ),
                     const SizedBox(height: 12),
                     Row(

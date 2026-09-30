@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/k_components.dart';
 import '../../core/services/export_import_service.dart';
 
 class ExportDialog extends StatefulWidget {
@@ -45,7 +46,7 @@ class _ExportDialogState extends State<ExportDialog> {
                   ],
                 ),
                 const Spacer(),
-                IconButton(icon: const Icon(Icons.close), onPressed: () => Navigator.of(context).pop()),
+                KButton.icon(icon: const Icon(Icons.close), onPressed: () => Navigator.of(context).pop()),
               ],
             ),
             const SizedBox(height: 20),
@@ -124,7 +125,7 @@ class _ExportDialogState extends State<ExportDialog> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withOpacity(0.15),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(_statusMessage!, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),

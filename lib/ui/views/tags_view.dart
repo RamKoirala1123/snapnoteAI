@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/models/capture_item.dart';
 import '../widgets/capture_card.dart';
+import '../widgets/k_components.dart';
 
 class TagsView extends StatefulWidget {
   final List<CaptureItem> captures;
@@ -43,7 +44,7 @@ class _TagsViewState extends State<TagsView> {
         ? widget.captures
         : widget.captures.where((e) => e.tags.any((t) => t.trim().toLowerCase() == _selectedTag)).toList();
 
-    return Scaffold(
+    return KScaffold(
       backgroundColor: Colors.transparent,
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -57,7 +58,7 @@ class _TagsViewState extends State<TagsView> {
                 Text('Tag Manager & Filter', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
                 const Spacer(),
                 if (_selectedTag != null)
-                  TextButton.icon(
+                  KButton.textIcon(
                     onPressed: () => setState(() => _selectedTag = null),
                     icon: const Icon(Icons.clear, size: 16),
                     label: const Text('Clear Filter'),
@@ -96,7 +97,7 @@ class _TagsViewState extends State<TagsView> {
                         return ChoiceChip(
                           label: Text('#$tag ($count)'),
                           selected: isSelected,
-                          selectedColor: theme.colorScheme.primary.withOpacity(0.3),
+                          selectedColor: theme.colorScheme.primary.withValues(alpha: 0.3),
                           onSelected: (val) {
                             setState(() => _selectedTag = val ? tag : null);
                           },
@@ -111,7 +112,7 @@ class _TagsViewState extends State<TagsView> {
 
             // Filtered List Header
             Text(
-              _selectedTag == null ? 'All Captures (${filteredCaptures.length})' : 'Captures tagged #${_selectedTag} (${filteredCaptures.length})',
+              _selectedTag == null ? 'All Captures (${filteredCaptures.length})' : 'Captures tagged #$_selectedTag (${filteredCaptures.length})',
               style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
 
