@@ -29,23 +29,9 @@ class ReadLaterView extends StatelessWidget {
 
     return KScaffold(
       backgroundColor: Colors.transparent,
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.menu_book_rounded, color: AppConstants.getCategoryColor(AppConstants.catReadLater), size: 28),
-                const SizedBox(width: 10),
-                Text('Read Later', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-                const Spacer(),
-                Text('${items.length} Articles', style: const TextStyle(color: Colors.grey)),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: items.isEmpty
+      title: 'Read Later',
+      subtitle: '${items.length} Articles',
+      body: items.isEmpty
                   ? const Center(child: Text('No articles saved.', style: TextStyle(color: Colors.grey)))
                   : ListView(
                       children: [
@@ -66,10 +52,6 @@ class ReadLaterView extends StatelessWidget {
                         ],
                       ],
                     ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

@@ -37,24 +37,13 @@ class DashboardView extends StatelessWidget {
 
     return KScaffold(
       backgroundColor: Colors.transparent,
+      title: 'SnapNote AI',
+      subtitle: 'Your personal memory assistant',
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Welcome Header
-            Row(
-              children: [
-                Icon(Icons.auto_awesome_rounded, color: theme.colorScheme.primary, size: 28),
-                const SizedBox(width: 12),
-                Text(
-                  'SnapNote AI',
-                  style: context.headlineMedium.copyWith(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 24),
 
             // Statistics Grid Row
             Row(

@@ -30,23 +30,9 @@ class TasksView extends StatelessWidget {
 
     return KScaffold(
       backgroundColor: Colors.transparent,
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.check_circle_outline_rounded, color: AppConstants.getCategoryColor(AppConstants.catTask), size: 28),
-                const SizedBox(width: 10),
-                Text('Actionable Tasks', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-                const Spacer(),
-                Text('${tasks.length} Total', style: const TextStyle(color: Colors.grey)),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: tasks.isEmpty
+      title: 'Actionable Tasks',
+      subtitle: '${tasks.length} Total',
+      body: tasks.isEmpty
                   ? const Center(child: Text('No tasks found.', style: TextStyle(color: Colors.grey)))
                   : ListView(
                       children: [
@@ -67,10 +53,6 @@ class TasksView extends StatelessWidget {
                         ],
                       ],
                     ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

@@ -30,23 +30,9 @@ class CodeView extends StatelessWidget {
 
     return KScaffold(
       backgroundColor: Colors.transparent,
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.code_rounded, color: AppConstants.getCategoryColor(AppConstants.catCode), size: 28),
-                const SizedBox(width: 10),
-                Text('Code Snippets Repository', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-                const Spacer(),
-                Text('${snippets.length} Snippets', style: const TextStyle(color: Colors.grey)),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: snippets.isEmpty
+      title: 'Code Snippets Repository',
+      subtitle: '${snippets.length} Snippets',
+      body: snippets.isEmpty
                   ? const Center(child: Text('No code snippets captured.', style: TextStyle(color: Colors.grey)))
                   : ListView.builder(
                       itemCount: snippets.length,
@@ -128,10 +114,6 @@ class CodeView extends StatelessWidget {
                         );
                       },
                     ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

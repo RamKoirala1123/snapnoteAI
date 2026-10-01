@@ -104,28 +104,18 @@ class _SettingsViewState extends State<SettingsView> {
 
     return KScaffold(
       backgroundColor: Colors.transparent,
+      title: 'Application Settings',
+      subtitle: 'Configure your preferences',
+      trailing: KButton.primaryIcon(
+        onPressed: _save,
+        icon: const Icon(Icons.save_rounded),
+        label: const Text('Save Settings'),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Icon(Icons.settings_rounded, color: theme.colorScheme.primary, size: 28),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text('Application Settings', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                const SizedBox(width: 10),
-                KButton.primaryIcon(
-                  onPressed: _save,
-                  icon: const Icon(Icons.save_rounded),
-                  label: const Text('Save Settings'),
-                  ),
-              ],
-            ),
-
-            const SizedBox(height: 24),
 
             // AI Configuration Card
             _buildSectionCard(

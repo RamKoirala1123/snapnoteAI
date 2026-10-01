@@ -24,23 +24,9 @@ class PlacesView extends StatelessWidget {
 
     return KScaffold(
       backgroundColor: Colors.transparent,
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.location_on_rounded, color: AppConstants.getCategoryColor(AppConstants.catPlace), size: 28),
-                const SizedBox(width: 10),
-                Text('Places & Locations', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-                const Spacer(),
-                Text('${places.length} Places', style: const TextStyle(color: Colors.grey)),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: places.isEmpty
+      title: 'Places & Locations',
+      subtitle: '${places.length} Places',
+      body: places.isEmpty
                   ? const Center(child: Text('No places saved.', style: TextStyle(color: Colors.grey)))
                   : ListView.builder(
                       itemCount: places.length,
@@ -49,10 +35,6 @@ class PlacesView extends StatelessWidget {
                         return _buildPlaceCard(item, theme);
                       },
                     ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

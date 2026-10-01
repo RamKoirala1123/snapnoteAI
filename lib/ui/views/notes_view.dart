@@ -24,23 +24,9 @@ class NotesView extends StatelessWidget {
 
     return KScaffold(
       backgroundColor: Colors.transparent,
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.article_rounded, color: AppConstants.getCategoryColor(AppConstants.catNote), size: 28),
-                const SizedBox(width: 10),
-                Text('Notes & Documentation', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-                const Spacer(),
-                Text('${notes.length} Notes', style: const TextStyle(color: Colors.grey)),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: notes.isEmpty
+      title: 'Notes & Documentation',
+      subtitle: '${notes.length} Notes',
+      body: notes.isEmpty
                   ? const Center(child: Text('No notes captured yet.', style: TextStyle(color: Colors.grey)))
                   : GridView.builder(
                       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -55,10 +41,6 @@ class NotesView extends StatelessWidget {
                         return _buildNoteCard(item, theme);
                       },
                     ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

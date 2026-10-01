@@ -32,6 +32,7 @@ class RemindersView extends StatelessWidget {
     });
 
     return KScaffold(
+      backgroundColor: Colors.transparent,
       title: 'Reminders',
       subtitle: '${reminders.length} Reminders',
       body: reminders.isEmpty

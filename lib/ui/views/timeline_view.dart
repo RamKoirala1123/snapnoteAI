@@ -29,22 +29,13 @@ class TimelineView extends StatelessWidget {
 
     return KScaffold(
       backgroundColor: Colors.transparent,
+      title: 'Visual Timeline',
+      subtitle: '${captures.length} Total Memory Captures',
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Icon(Icons.timeline_rounded, color: theme.colorScheme.primary, size: 28),
-                const SizedBox(width: 10),
-                Text('Visual Timeline', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-                const Spacer(),
-                Text('${captures.length} Total Memory Captures', style: const TextStyle(color: Colors.grey)),
-              ],
-            ),
-
-            const SizedBox(height: 16),
 
             Expanded(
               child: grouped.isEmpty

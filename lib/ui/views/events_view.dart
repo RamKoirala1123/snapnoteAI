@@ -32,6 +32,7 @@ class EventsView extends StatelessWidget {
     });
 
     return KScaffold(
+      backgroundColor: Colors.transparent,
       title: 'Events & Schedule',
       subtitle: '${events.length} Events',
       body: events.isEmpty

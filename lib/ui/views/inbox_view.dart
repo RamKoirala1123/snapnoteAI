@@ -44,62 +44,30 @@ class _InboxViewState extends State<InboxView> {
 
     return KScaffold(
       backgroundColor: Colors.transparent,
+      title: 'Inbox & Processing',
+      subtitle: 'Recently captured items and items requiring your confirmation',
+      trailing: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          ChoiceChip(
+            label: const Text('All Inbox'),
+            selected: !_filterNeedsReviewOnly,
+            onSelected: (val) => setState(() => _filterNeedsReviewOnly = false),
+          ),
+          ChoiceChip(
+            label: Text('⚠️ Needs Review ()'),
+            selected: _filterNeedsReviewOnly,
+            selectedColor: Colors.amber.withValues(alpha: 0.3),
+            onSelected: (val) => setState(() => _filterNeedsReviewOnly = true),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header & Filter Toggle
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Inbox & Processing',
-                        style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      const Text(
-                        'Recently captured items and items requiring your confirmation',
-                        style: TextStyle(color: Colors.grey, fontSize: 12),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    ChoiceChip(
-                      label: const Text('All Inbox'),
-                      selected: !_filterNeedsReviewOnly,
-                      onSelected: (val) => setState(() => _filterNeedsReviewOnly = false),
-                    ),
-                    ChoiceChip(
-                      label: Text('⚠️ Needs Review ($needsReviewCount)'),
-                      selected: _filterNeedsReviewOnly,
-                      selectedColor: Colors.amber.withValues(alpha: 0.3),
-                      onSelected: (val) => setState(() => _filterNeedsReviewOnly = true),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 16),
-
-            // Search Bar
-            TextField(
-              decoration: const InputDecoration(
-                hintText: 'Filter inbox items...',
-                prefixIcon: Icon(Icons.search_rounded),
-              ),
-              onChanged: (val) => setState(() => _searchQuery = val),
-            ),
-
-            const SizedBox(height: 16),
 
             // Grid / Feed
             Expanded(

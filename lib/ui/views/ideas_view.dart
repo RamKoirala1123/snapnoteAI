@@ -24,23 +24,9 @@ class IdeasView extends StatelessWidget {
 
     return KScaffold(
       backgroundColor: Colors.transparent,
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.lightbulb_rounded, color: AppConstants.getCategoryColor(AppConstants.catIdea), size: 28),
-                const SizedBox(width: 10),
-                Text('Ideas & Concepts', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-                const Spacer(),
-                Text('${ideas.length} Ideas', style: const TextStyle(color: Colors.grey)),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: ideas.isEmpty
+      title: 'Ideas & Concepts',
+      subtitle: '${ideas.length} Ideas',
+      body: ideas.isEmpty
                   ? const Center(child: Text('No ideas saved.', style: TextStyle(color: Colors.grey)))
                   : GridView.builder(
                       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -55,10 +41,6 @@ class IdeasView extends StatelessWidget {
                         return _buildIdeaCard(item, theme);
                       },
                     ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

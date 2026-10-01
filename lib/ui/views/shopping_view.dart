@@ -29,23 +29,9 @@ class ShoppingView extends StatelessWidget {
 
     return KScaffold(
       backgroundColor: Colors.transparent,
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.shopping_bag_rounded, color: AppConstants.getCategoryColor(AppConstants.catShopping), size: 28),
-                const SizedBox(width: 10),
-                Text('Shopping & Products', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-                const Spacer(),
-                Text('${items.length} Products', style: const TextStyle(color: Colors.grey)),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: items.isEmpty
+      title: 'Shopping & Products',
+      subtitle: '${items.length} Products',
+      body: items.isEmpty
                   ? const Center(child: Text('No products found.', style: TextStyle(color: Colors.grey)))
                   : ListView(
                       children: [
@@ -66,10 +52,6 @@ class ShoppingView extends StatelessWidget {
                         ],
                       ],
                     ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

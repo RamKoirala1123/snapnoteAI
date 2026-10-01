@@ -46,27 +46,20 @@ class _TagsViewState extends State<TagsView> {
 
     return KScaffold(
       backgroundColor: Colors.transparent,
+      title: 'Tag Manager & Filter',
+      subtitle: 'Organize by tags',
+      trailing: _selectedTag != null
+          ? KButton.textIcon(
+              onPressed: () => setState(() => _selectedTag = null),
+              icon: const Icon(Icons.clear, size: 16),
+              label: const Text('Clear Filter'),
+            )
+          : null,
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Icon(Icons.tag_rounded, color: theme.colorScheme.primary, size: 28),
-                const SizedBox(width: 10),
-                Text('Tag Manager & Filter', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-                const Spacer(),
-                if (_selectedTag != null)
-                  KButton.textIcon(
-                    onPressed: () => setState(() => _selectedTag = null),
-                    icon: const Icon(Icons.clear, size: 16),
-                    label: const Text('Clear Filter'),
-                  ),
-              ],
-            ),
-
-            const SizedBox(height: 16),
 
             // Tag Cloud Card
             if (sortedTags.isNotEmpty)
@@ -86,23 +79,28 @@ class _TagsViewState extends State<TagsView> {
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.grey),
                     ),
                     const SizedBox(height: 10),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: sortedTags.map((entry) {
-                        final tag = entry.key;
-                        final count = entry.value;
-                        final isSelected = _selectedTag == tag;
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxHeight: 200),
+                      child: SingleChildScrollView(
+                        child: Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: sortedTags.map((entry) {
+                            final tag = entry.key;
+                            final count = entry.value;
+                            final isSelected = _selectedTag == tag;
 
-                        return ChoiceChip(
-                          label: Text('#$tag ($count)'),
-                          selected: isSelected,
-                          selectedColor: theme.colorScheme.primary.withValues(alpha: 0.3),
-                          onSelected: (val) {
-                            setState(() => _selectedTag = val ? tag : null);
-                          },
-                        );
-                      }).toList(),
+                            return ChoiceChip(
+                              label: Text('#$tag ($count)'),
+                              selected: isSelected,
+                              selectedColor: theme.colorScheme.primary.withValues(alpha: 0.3),
+                              onSelected: (val) {
+                                setState(() => _selectedTag = val ? tag : null);
+                              },
+                            );
+                          }).toList(),
+                        ),
+                      ),
                     ),
                   ],
                 ),

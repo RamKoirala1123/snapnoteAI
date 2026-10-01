@@ -90,20 +90,13 @@ class _SearchViewState extends State<SearchView> with SingleTickerProviderStateM
 
     return KScaffold(
       backgroundColor: Colors.transparent,
+      title: 'Search Knowledge Base',
+      subtitle: 'Find your saved captures',
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Icon(Icons.search_rounded, color: theme.colorScheme.primary, size: 28),
-                const SizedBox(width: 10),
-                Text('Search Knowledge Base', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-              ],
-            ),
-
-            const SizedBox(height: 16),
 
             TabBar(
               controller: _tabController,

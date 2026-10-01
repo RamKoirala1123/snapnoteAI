@@ -111,19 +111,10 @@ class _ChatViewState extends State<ChatView> {
 
     return KScaffold(
       backgroundColor: Colors.transparent,
+      title: 'AI Copilot',
+      subtitle: 'Ask questions about your captured memory',
       body: Column(
         children: [
-          // Header
-          Padding(
-            padding: const EdgeInsets.all(24),
-            child: Row(
-              children: [
-                Icon(Icons.auto_awesome_rounded, color: theme.colorScheme.primary, size: 28),
-                const SizedBox(width: 10),
-                Text('AI Copilot', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-              ],
-            ),
-          ),
           
           // Chat Messages
           Expanded(
